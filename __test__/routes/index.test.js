@@ -8,8 +8,16 @@ describe('Routes /', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         numerals: '/numerals',
-        decimals: '/decimals',
+        decimal: '/decimal',
       });
+    });
+  });
+
+  describe('GET unknown route', () => {
+    it('should respond with 404 not found', async () => {
+      const response = await request(app).get('/alsdhajshdjksh');
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ error: 'Not found' });
     });
   });
 });

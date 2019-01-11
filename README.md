@@ -1,6 +1,13 @@
 # Romegen
 
-Romain numerals generator and parsing API
+Romain numerals generator and parsing API.
+
+## Goals
+
+As a backend software engineer, I ensure that my code is 100% unit test
+covered. This provides maintainability and faster development through TDD.
+
+I used ESLint to help with automated code formatting and checking.
 
 ## Development
 

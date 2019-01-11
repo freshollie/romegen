@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const decimals = require('./decimals.js');
+const decimal = require('./decimal.js');
 const numerals = require('./numerals.js');
 
 const router = Router();
@@ -7,11 +7,17 @@ const router = Router();
 router.get('/', (_, res) => {
   res.send({
     numerals: '/numerals',
-    decimals: '/decimals',
+    decimal: '/decimal',
   });
 });
 
-router.use('/decimals', decimals);
+router.use('/decimal', decimal);
 router.use('/numerals', numerals);
+
+router.use((_, res) => {
+  res.status(404).send({
+    error: 'Not found',
+  });
+});
 
 module.exports = router;
