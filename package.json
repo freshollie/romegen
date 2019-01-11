@@ -1,0 +1,28 @@
+{
+  "name": "romegen",
+  "version": "1.0.0",
+  "description": "Roman numeral api",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freshollie/romegen.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/freshollie/romegen/issues"
+  },
+  "homepage": "https://github.com/freshollie/romegen#readme",
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.3",
+    "jest": "^23.6.0"
+  },
+  "dependencies": {}
+}
