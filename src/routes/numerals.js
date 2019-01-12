@@ -10,7 +10,7 @@ router.get('/', (_, res) => {
 });
 
 router.get('/:decimal', (req, res) => {
-  const decimal = parseInt(req.params.decimal, 10);
+  const { decimal } = req.params;
 
   try {
     res.send({ value: romegen.generate(decimal) });
