@@ -28,7 +28,7 @@ describe('romegen', () => {
     });
 
     it('should throw error for invalid strings', () => {
-      expect.assertions(2);
+      expect.assertions(3);
 
       try {
         romegen.parse('LM');
@@ -38,6 +38,12 @@ describe('romegen', () => {
 
       try {
         romegen.parse('VL');
+      } catch (e) {
+        expect(e.message).toBe('Invalid roman numerals');
+      }
+
+      try {
+        romegen.parse('asksks');
       } catch (e) {
         expect(e.message).toBe('Invalid roman numerals');
       }
@@ -79,6 +85,16 @@ describe('romegen', () => {
         romegen.generate(323232);
       } catch (e) {
         expect(e.message).toBe('Cannot convert values larger than 3999');
+      }
+    });
+
+    it('should throw an error if decimal is not a number', () => {
+      expect.assertions(1);
+
+      try {
+        romegen.generate('asdkjjasdjh');
+      } catch (e) {
+        expect(e.message).toBe('A number must be given');
       }
     });
   });

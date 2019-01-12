@@ -46,6 +46,10 @@ exports.parse = (numeralString) => {
   numerals.forEach((numeral) => {
     let value = NUMERAL_VALUES[numeral];
 
+    if (!value) {
+      throw new Error('Invalid roman numerals');
+    }
+
     // Manage the case for IV IX ect...
     if (previousValue < value) {
       // If this combination is not possible, throw an error
@@ -74,7 +78,12 @@ exports.parse = (numeralString) => {
  * Generate a roman numeral string from
  * the given decimal input
  */
-exports.generate = (decimalValue) => {
+exports.generate = (decimalString) => {
+  const decimalValue = parseInt(decimalString, 10);
+  if (Number.isNaN(decimalValue)) {
+    throw new Error('A number must be given');
+  }
+
   if (decimalValue < 1) {
     throw new Error('Cannot convert values less than 1');
   }
