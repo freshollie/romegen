@@ -2,6 +2,14 @@ const romegen = require('../../src/gen/romegen.js');
 
 describe('romegen', () => {
   describe('parse', () => {
+    function expectInvalid(string) {
+      try {
+        romegen.parse(string);
+      } catch (e) {
+        expect(e.message).toBe('Invalid roman numerals');
+      }
+    }
+
     it('should convert romain numerals to decimal', () => {
       expect(romegen.parse('MMXIX')).toBe(2019);
       expect(romegen.parse('MCIX')).toBe(1109);
@@ -28,25 +36,13 @@ describe('romegen', () => {
     });
 
     it('should throw error for invalid strings', () => {
-      expect.assertions(3);
+      expect.assertions(4);
 
-      try {
-        romegen.parse('LM');
-      } catch (e) {
-        expect(e.message).toBe('Invalid roman numerals');
-      }
-
-      try {
-        romegen.parse('VL');
-      } catch (e) {
-        expect(e.message).toBe('Invalid roman numerals');
-      }
-
-      try {
-        romegen.parse('asksks');
-      } catch (e) {
-        expect(e.message).toBe('Invalid roman numerals');
-      }
+      expectInvalid('LV');
+      expectInvalid('LM');
+      expectInvalid('asksks');
+      expectInvalid('VIIII');
+      expectInvalid('XXXXV');
     });
   });
 
