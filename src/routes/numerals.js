@@ -4,18 +4,17 @@ const romegen = require('../gen/romegen.js');
 const router = Router();
 
 router.get('/', (_, res) => {
-  res.status(422).send({
-    error: 'A number to convert is required',
-  });
+  res.status(422).send({ error: 'A roman numerals string must be given' });
 });
 
-router.get('/:decimal', (req, res) => {
-  const { decimal } = req.params;
-
+router.get('/:numerals', (req, res) => {
+  const { numerals } = req.params;
   try {
-    res.send({ value: romegen.generate(decimal) });
+    res.send({ decimal: romegen.parse(numerals) });
   } catch (e) {
-    res.status(422).send({ error: e.message });
+    res.status(422).send({
+      error: e.message,
+    });
   }
 });
 
