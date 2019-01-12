@@ -5,52 +5,62 @@ const romegen = require('../../src/gen/romegen.js');
 jest.mock('../../src/gen/romegen.js');
 
 describe('Routes /decimal', () => {
-  describe('GET /:numerals', () => {
-    it('should parse given numerals and respond with result', async () => {
-      romegen.parse.mockReturnValue(3920);
-
-      const response = await request(app).get('/decimal/MMCC');
-      expect(romegen.parse).toHaveBeenCalledWith('MMCC');
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({ value: 3920 });
-
-      romegen.parse.mockReturnValue(2939);
-
-      const response2 = await request(app).get('/decimal/MLCC');
-      expect(romegen.parse).toHaveBeenCalledWith('MLCC');
-
-      expect(response2.body).toEqual({ value: 2939 });
-    });
-
-    it('should return error, no value supplied', async () => {
+  describe('GET /', () => {
+    it('should respond with an error', async () => {
       const response = await request(app).get('/decimal');
+
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
-        error: 'A roman numerals string must be given',
+        error: 'A number to convert is required',
+      });
+    });
+  });
+
+  describe('GET /:decimal', () => {
+    it('should return the generated roman numerals of the given decimal', async () => {
+      romegen.generate.mockReturnValue('MMMCCCC');
+
+      const response = await request(app).get('/decimal/2039');
+      expect(romegen.generate).toBeCalledWith('2039');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        numerals: 'MMMCCCC',
+      });
+
+      romegen.generate.mockReturnValue('MMCCLV');
+
+      const response2 = await request(app).get('/decimal/28');
+      expect(romegen.generate).toBeCalledWith('28');
+
+      expect(response2.status).toBe(200);
+      expect(response2.body).toEqual({
+        numerals: 'MMCCLV',
       });
     });
 
-    it('should respond with any errors from parse function', async () => {
-      romegen.parse.mockImplementation(() => {
-        throw new Error('Oh dear, there was some problem with that');
+    it('should respond with any error from the generator', async () => {
+      romegen.generate.mockImplementation(() => {
+        throw new Error('Some error');
       });
 
-      const response = await request(app).get('/decimal/MMCC');
-      expect(romegen.parse).toHaveBeenCalledWith('MMCC');
+      const response = await request(app).get('/decimal/8283');
 
       expect(response.status).toBe(422);
-      expect(response.body).toEqual({ error: 'Oh dear, there was some problem with that' });
-
-      romegen.parse.mockImplementation(() => {
-        throw new Error('Another error :(');
+      expect(response.body).toEqual({
+        error: 'Some error',
       });
 
-      const response2 = await request(app).get('/decimal/MMCC');
-      expect(romegen.parse).toHaveBeenCalledWith('MMCC');
+      romegen.generate.mockImplementation(() => {
+        throw new Error('Some other error');
+      });
+
+      const response2 = await request(app).get('/decimal/8283');
 
       expect(response2.status).toBe(422);
-      expect(response2.body).toEqual({ error: 'Another error :(' });
+      expect(response2.body).toEqual({
+        error: 'Some other error',
+      });
     });
   });
 });
