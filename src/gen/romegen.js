@@ -29,6 +29,42 @@ NUMERALS.forEach((numeral) => {
 });
 
 
+function generateNumerals(decimalValue) {
+  let accumulator = decimalValue;
+  let numeralString = '';
+
+  const checkDecimal = (decimal) => {
+    // Check if we can fit
+    // this possible decimal into our
+    // left over value
+    if (decimal <= accumulator) {
+      // If we can, we find the numeral representation
+      // of the decimal and add it to our string
+      numeralString += DECIMAL_NUMERALS[decimal];
+
+      // Taking away the value from the accumulator
+      accumulator -= decimal;
+
+      // break to start from the highest
+      // decimal again
+      return false;
+    }
+
+    // break if accumulator is 0
+    return accumulator !== 0;
+  };
+
+  while (accumulator > 0) {
+    // Find the largest possible numeral
+    // we can use for what is left on the
+    // accumuator
+    DECIMALS.every(checkDecimal);
+  }
+
+  return numeralString;
+}
+
+
 /**
  * Parse the given roman numeral string
  * and convert it to a decimal value
@@ -72,7 +108,7 @@ exports.parse = (numeralString) => {
   });
 
   // Final validation to ensure numerals are valid
-  if (exports.generate(accumulator) !== numeralString) {
+  if (generateNumerals(accumulator) !== numeralString) {
     throw new Error('Invalid roman numerals');
   }
 
@@ -97,36 +133,5 @@ exports.generate = (decimalString) => {
     throw new Error('Cannot convert values larger than 3999');
   }
 
-  let accumulator = decimalValue;
-  let numeralString = '';
-
-  const checkDecimal = (decimal) => {
-    // Check if we can fit
-    // this possible decimal into our
-    // left over value
-    if (decimal <= accumulator) {
-      // If we can, we find the numeral representation
-      // of the decimal and add it to our string
-      numeralString += DECIMAL_NUMERALS[decimal];
-
-      // Taking away the value from the accumulator
-      accumulator -= decimal;
-
-      // break to start from the highest
-      // decimal again
-      return false;
-    }
-
-    // break if accumulator is 0
-    return accumulator !== 0;
-  };
-
-  while (accumulator > 0) {
-    // Find the largest possible numeral
-    // we can use for what is left on the
-    // accumuator
-    DECIMALS.every(checkDecimal);
-  }
-
-  return numeralString;
+  return generateNumerals(decimalValue);
 };
