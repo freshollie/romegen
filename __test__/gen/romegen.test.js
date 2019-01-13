@@ -5,6 +5,7 @@ describe('romegen', () => {
     function expectInvalid(string) {
       try {
         romegen.parse(string);
+        throw new Error(`${string} should be invalid`);
       } catch (e) {
         expect(e.message).toBe('Invalid roman numerals');
       }
@@ -36,13 +37,13 @@ describe('romegen', () => {
     });
 
     it('should throw error for invalid strings', () => {
-      expect.assertions(4);
-
-      expectInvalid('LV');
+      expectInvalid('VL');
       expectInvalid('LM');
       expectInvalid('asksks');
       expectInvalid('VIIII');
       expectInvalid('XXXXV');
+      expectInvalid('IXIXIX');
+      expectInvalid('VV');
     });
   });
 
