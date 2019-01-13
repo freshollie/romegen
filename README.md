@@ -1,6 +1,6 @@
 # Romegen
 
-Romain numerals generator and parsing API.
+Roman numerals generator and parsing API.
 
 ## Goals
 
