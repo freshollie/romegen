@@ -43,20 +43,7 @@ exports.parse = (numeralString) => {
   let previousNumeral = null;
   let previousValue = Infinity;
 
-  let repeats = 0;
-
   numerals.forEach((numeral) => {
-    // Only M's are allowed to repeat more than 3 times
-    if (previousNumeral !== numeral) {
-      repeats = 1;
-    } else {
-      repeats += 1;
-    }
-
-    if (repeats > 3 && numeral !== 'M') {
-      throw new Error('Invalid roman numerals');
-    }
-
     let value = NUMERAL_VALUES[numeral];
 
     if (!value) {
@@ -83,6 +70,11 @@ exports.parse = (numeralString) => {
       throw new Error('Cannot parse, as value is larger than 3999');
     }
   });
+
+  // Final validation to ensure numerals are valid
+  if (exports.generate(accumulator) !== numeralString) {
+    throw new Error('Invalid roman numerals');
+  }
 
   return accumulator;
 };
